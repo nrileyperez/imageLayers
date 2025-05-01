@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Image Segmentation</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <h1>Image Segmentation App</h1>
+
+  <form id="seg-form" class="card">
+    <input type="file" name="image" accept="image/*" required>
+    <input type="number" name="layers" value="3" min="2" max="10">
+    <button type="submit">Segment!</button>
+  </form>
+
+  <div id="progress-container" style="display:none;">
+    <div id="progress-bar"></div>
+    <div id="progress-text">Starting…</div>
+  </div>
+
+  <script>
+    const form = document.getElementById('seg-form');
+    const bar  = document.getElementById('progress-bar');
+    const txt  = document.getElementById('progress-text');
+    const pc   = document.getElementById('progress-container');
+
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+      const fd = new FormData(form);
+      // Kick off job
+      const res = await fetch('/start', { method:'POST', body:fd });
+      const { job_id } = await res.json();
+
+      // Show progress UI
+      form.style.display = 'none';
+      pc.style.display   = 'block';
+
+      // Poll every 500ms
+      const iv = setInterval(async () => {
+        const r2 = await fetch(`/progress/${job_id}`);
+        const { progress } = await r2.json();
+        bar.style.width = progress + '%';
+        txt.innerText  = `Progress: ${progress}%`;
+
+        if (progress >= 100) {
+          clearInterval(iv);
+          window.location = `/results/${job_id}`;
+        }
+      }, 500);
+    });
+  </script>
+</body>
+</html>

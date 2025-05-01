@@ -1,0 +1,12 @@
+# Virtualenv
+.venv/
+
+# IDE settings
+.idea/
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Output folder
+output/

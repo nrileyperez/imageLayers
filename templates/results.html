@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Segmentation Results</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <h1>Segmentation Complete</h1>
+
+  <h2>Original</h2>
+  <div class="results">
+    <div class="layer-card">
+      <img src="{{ original }}" alt="Original Image">
+    </div>
+  </div>
+
+  <h2>Layers</h2>
+  <div class="results">
+    {% for fname in segments %}
+      <div class="layer-card">
+        <img
+          src="{{ url_for('uploaded_file', filename=fname) }}"
+          alt="Layer {{ loop.index }}">
+        <a
+          class="download"
+          href="{{ url_for('uploaded_file', filename=fname) }}"
+          download>
+          Download Layer {{ loop.index }}
+        </a>
+      </div>
+    {% endfor %}
+  </div>
+
+  <div class="new-image">
+    <a href="{{ url_for('index') }}">❮ Segment Another Image</a>
+  </div>
+</body>
+</html>
