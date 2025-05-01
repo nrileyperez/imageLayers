@@ -3,7 +3,9 @@
 **A Flask-powered web app that cleanly extracts and exports individual layers (or objects) from an image, with real-time progress tracking.**
 
 ---
+![image](https://github.com/user-attachments/assets/ec22824a-f216-4526-a001-518d5e4c3ff8)
 
+---
 ## 🔍 Overview
 
 This project demonstrates a full-stack Python solution for image segmentation:
